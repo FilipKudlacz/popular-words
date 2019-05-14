@@ -3,9 +3,15 @@ package pl.sii;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -46,6 +52,23 @@ public class PopularWordsTest {
     }
 
     private Map<String, Long> getWordsFrequencyListCreatedByAdamKilgarriff() {
-        throw new NotImplementedException("TODO implementation");
+        File input = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("all.num")).getFile());
+        Map<String, Long> result = new HashMap<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(input))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] wordsInLine = line.split(" ");
+
+                Long value = Long.parseLong(wordsInLine[0]);
+                result.put(wordsInLine[1], value);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 }
